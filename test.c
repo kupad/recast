@@ -3,8 +3,8 @@
 #include "recast.h"
 
 int main() {
-    printf("%f\n", uint32_to_float(0xdeadbeef));
-    printf("%f\n", uint32_to_float(0xcafebabe));
+    printf("%f\n", int2float(0xdeadbeef));
+    printf("%f\n", int2float(0xcafebabe));
     return 0;
 }
 

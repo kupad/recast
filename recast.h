@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 
-float uint32_to_float(uint32_t n);
-float bytes_to_float(char* s);
+float int2float(const uint32_t);
+float float2int(const float);
+float bytes2float(const unsigned char*);
 
 #endif
 
