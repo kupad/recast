@@ -4,19 +4,30 @@ import ctypes
 _recast = ctypes.CDLL("./librecast.so")
 _recast.int2float.restype = ctypes.c_float
 _recast.bytes2float.restype = ctypes.c_float
-_recast.float2bytes.restype = ctypes.c_char_p
+_recast.strtod_wrap.restype = ctypes.c_double
+
+# return c_void_p so that it can be freed
+_recast.float2bytes.restype = ctypes.c_void_p
 
 
 def int2float(x):
     return _recast.int2float(x)
 
 
-def bytes2float(x):
-    return _recast.bytes2float(x)
+def bytes2float(b):
+    return _recast.bytes2float(b)
 
 
 def float2bytes(x):
-    return _recast.float2bytes(ctypes.c_float(x))
+    ptr = _recast.float2bytes(ctypes.c_float(x))
+    s = ctypes.cast(ptr, ctypes.c_char_p).value
+    _recast.free_wrap(ptr)
+    return s
+
+
+def strtod(s):
+    s = s.encode('utf-8')
+    return _recast.strtod_wrap(s)
 
 
 if __name__ == '__main__':
@@ -25,7 +36,7 @@ if __name__ == '__main__':
     # f = _recast.bytes2float(b'aaaa')
     # print(f)
 
-    b1 = b'aaaa'
+    b1 = b'abcd'
     print('b1', b1)
 
     f = bytes2float(b1)
