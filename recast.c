@@ -26,11 +26,12 @@ float bytes2float(const unsigned char* in) {
     return mem;
 }
 
+
+static unsigned char buff[4];
 unsigned char* float2bytes(const float in) {
-    unsigned char* mem = malloc(4); //???
-    float *p = (float*)mem;
+    float *p = (float*)buff;
     *p = in;
-    return mem;
+    return buff;
 }
 
 void free_wrap(void* ptr) {

@@ -5,9 +5,7 @@ _recast = ctypes.CDLL("./librecast.so")
 _recast.int2float.restype = ctypes.c_float
 _recast.bytes2float.restype = ctypes.c_float
 _recast.strtod_wrap.restype = ctypes.c_double
-
-# return c_void_p so that it can be freed
-_recast.float2bytes.restype = ctypes.c_void_p
+_recast.float2bytes.restype = ctypes.c_char_p
 
 
 def int2float(x):
@@ -19,10 +17,7 @@ def bytes2float(b):
 
 
 def float2bytes(x):
-    ptr = _recast.float2bytes(ctypes.c_float(x))
-    s = ctypes.cast(ptr, ctypes.c_char_p).value
-    _recast.free_wrap(ptr)
-    return s
+    return _recast.float2bytes(ctypes.c_float(x))
 
 
 def strtod(s):
