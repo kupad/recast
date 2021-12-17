@@ -1,4 +1,8 @@
 import ctypes
+import sys
+import struct
+from functools import partial
+
 
 # Load the shared library
 _recast = ctypes.CDLL("./librecast.so")
@@ -8,12 +12,36 @@ _recast.strtod_wrap.restype = ctypes.c_double
 _recast.float2bytes.restype = ctypes.c_char_p
 
 
-def int2float(x):
-    return _recast.int2float(x)
+def unpack(fmt, b):
+    return struct.unpack(fmt, b)[0]
 
 
-def bytes2float(b):
-    return _recast.bytes2float(b)
+bytes2short = partial(unpack, 'h')
+bytes2ushort = partial(unpack, 'H')
+bytes2int = partial(unpack, 'i')
+bytes2uint = partial(unpack, 'I')
+bytes2long = partial(unpack, 'l')
+bytes2ulong = partial(unpack, 'L')
+bytes2longlong = partial(unpack, 'q')
+bytes2ulonglong = partial(unpack, 'Q')
+bytes2ssize_t = partial(unpack, 'n')
+bytes2size_t = partial(unpack, 'N')
+bytes2half = partial(unpack, 'e')  # half float
+bytes2float = partial(unpack, 'f')
+bytes2double = partial(unpack, 'd')
+bytes2voidptr = partial(unpack, 'P')  # ???
+
+
+def int2uint(i, byteorder=sys.byteorder):
+    return bytes2uint(i.to_bytes(4, byteorder))
+
+
+def int2float(i, byteorder=sys.byteorder):
+    return bytes2float(i.to_bytes(4, byteorder))
+
+
+def uint2int(ui, byteorder=sys.byteorder):
+    return bytes2int(ui.to_bytes(4, byteorder))
 
 
 def float2bytes(x):
