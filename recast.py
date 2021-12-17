@@ -32,20 +32,36 @@ bytes2double = partial(unpack, 'd')
 bytes2voidptr = partial(unpack, 'P')  # ???
 
 
+def endian(order):
+    return '<' if order == 'little' else '>'
+
+
 def int2uint(i, byteorder=sys.byteorder):
-    return bytes2uint(i.to_bytes(4, byteorder))
+    return bytes2uint(i.to_bytes(4, byteorder, signed=True))
 
 
 def int2float(i, byteorder=sys.byteorder):
-    return bytes2float(i.to_bytes(4, byteorder))
+    return bytes2float(i.to_bytes(4, byteorder, signed=True))
 
 
 def uint2int(ui, byteorder=sys.byteorder):
     return bytes2int(ui.to_bytes(4, byteorder))
 
 
-def float2bytes(x):
-    return _recast.float2bytes(ctypes.c_float(x))
+def uint2float(ui, byteorder=sys.byteorder):
+    return bytes2float(ui.to_bytes(4, byteorder))
+
+
+def float2bytes(x, byteorder=sys.byteorder):
+    return struct.pack(endian(byteorder) + 'f', f)
+
+
+def float2int(f, byteorder=sys.byteorder):
+    return bytes2int(float2bytes(f, byteorder))
+
+
+def float2uint(f, byteorder=sys.byteorder):
+    return bytes2uint(float2bytes(f, byteorder))
 
 
 def strtod(s):
@@ -68,3 +84,5 @@ if __name__ == '__main__':
     b2 = float2bytes(f)
     print('b2', b2)
 
+    print('b3', uint2int(0xdeadbeef))
+    print('b4', hex(int2uint(-559038737)))
