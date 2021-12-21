@@ -1,11 +1,34 @@
-test: librecast.so
-	gcc -L. -Wall -o test test.c -lrecast
+SRC = src
+PYTHON  = python3
 
-librecast.so: recast.o
-	gcc -shared -o librecast.so recast.o
+.DEFAULT: build
 
-recast.o: recast.c
-	gcc -c -Wall -Werror -fpic recast.c
+.PHONY: build
+build: setup.py $(SRC)
+	$(PYTHON) setup.py sdist bdist_wheel
 
+dist: build
+
+.PHONY: test
+test: $(SRC)
+	$(PYTHON) -m unittest discover tests
+
+.PHONY: install
+install: build
+	sudo $(PYTHON) setup.py install --record .install-files
+
+.PHONY: uninstall
+uninstall: setup.py .install-files
+	cat .install-files | xargs -o sudo rm -ri && rm -f .install-files
+
+.PHONY: push
+push: dist
+	twine upload dist/*
+
+.PHONY: push-test
+push-test: dist
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+.PHONY: clean
 clean:
-	rm librecast.so recast.o
+	rm -rf build dist $(SRC)/*.egg-info $(SRC)/*.pyc
