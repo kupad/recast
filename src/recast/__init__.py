@@ -43,7 +43,7 @@ def uint2float(ui, byteorder=sys.byteorder):
     return bytes2float(ui.to_bytes(4, byteorder))
 
 
-def float2bytes(x, byteorder=sys.byteorder):
+def float2bytes(f, byteorder=sys.byteorder):
     return struct.pack(endian(byteorder) + 'f', f)
 
 
