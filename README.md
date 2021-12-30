@@ -1,6 +1,20 @@
 # recast
 python bit recaster
 
+Convenient functions for converting bytes into various different python
+types. These functions do not modify the underlying bits, but rather,
+how they are interpreted in python.
+
+## Examples
+```py
+>>> import recast
+
+>>> hex(recast.int2uint(-1))
+'0xffffffff'
+
+>>> recast.double2bytes(4.400150012111731e-110)
+b'recast:)'
+```
 
 ## License
 recast - python bit recaster
