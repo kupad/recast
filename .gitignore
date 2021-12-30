@@ -1,4 +1,6 @@
 *.so
 *.o
 test
-
+build/
+dist/
+*.egg-info/

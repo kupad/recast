@@ -1,13 +1,18 @@
-SRC = src
+SRC = $(shell find src/ -type f -name '*.py')
 PYTHON  = python3
+PKG = recast
 
-.DEFAULT: build
+.DEFAULT_GOAL := build
+
+.PHONY: build-deps
+build-deps:
+	$(PYTHON) -m pip install --upgrade build twine
 
 .PHONY: build
-build: setup.py $(SRC)
-	$(PYTHON) setup.py sdist bdist_wheel
+build: dist
 
-dist: build
+dist: setup.py $(SRC)
+	$(PYTHON) -m build
 
 .PHONY: test
 test: $(SRC)
@@ -15,19 +20,19 @@ test: $(SRC)
 
 .PHONY: install
 install: build
-	sudo $(PYTHON) setup.py install --record .install-files
+	$(PYTHON) -m pip install .
 
 .PHONY: uninstall
-uninstall: setup.py .install-files
-	cat .install-files | xargs -o sudo rm -ri && rm -f .install-files
+uninstall:
+	$(PYTHON) -m pip uninstall $(PKG)
 
 .PHONY: push
 push: dist
-	twine upload dist/*
+	$(PYTHON) -m twine upload dist/*
 
 .PHONY: push-test
 push-test: dist
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	$(PYTHON) -m twine upload --repository testpypi dist/*
 
 .PHONY: clean
 clean:
