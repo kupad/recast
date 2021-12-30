@@ -60,7 +60,7 @@ def uint2float(ui, byteorder=sys.byteorder):
     return bytes2float(ui.to_bytes(4, byteorder))
 
 
-def float2bytes(x, byteorder=sys.byteorder):
+def float2bytes(f, byteorder=sys.byteorder):
     return struct.pack(endian(byteorder) + 'f', f)
 
 
@@ -70,3 +70,15 @@ def float2int(f, byteorder=sys.byteorder):
 
 def float2uint(f, byteorder=sys.byteorder):
     return bytes2uint(float2bytes(f, byteorder))
+
+
+def double2bytes(d, byteorder=sys.byteorder):
+    return struct.pack(endian(byteorder) + 'd', d)
+
+
+def double2long(d, byteorder=sys.byteorder):
+    return bytes2long(double2bytes(d, byteorder))
+
+
+def double2ulong(d, byteorder=sys.byteorder):
+    return bytes2ulong(double2bytes(d, byteorder))
