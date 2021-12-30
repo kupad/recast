@@ -1,4 +1,6 @@
 # recast
+[![pypi package](https://img.shields.io/pypi/v/recast.svg)](https://pypi.python.org/pypi/recast/)
+
 python bit recaster
 
 Convenient functions for converting bytes into various different python
