@@ -1,4 +1,5 @@
-SRC = $(shell find src/ -type f -name '*.py')
+SRC = src
+PY_FILES = $(shell find $(SRC) -type f -name '*.py')
 PYTHON  = python3
 PKG = recast
 
@@ -11,11 +12,11 @@ build-deps:
 .PHONY: build
 build: dist
 
-dist: setup.py $(SRC)
+dist: setup.py $(PY_FILES)
 	$(PYTHON) -m build
 
 .PHONY: test
-test: $(SRC)
+test: $(PY_FILES)
 	$(PYTHON) -m unittest discover tests
 
 .PHONY: install
