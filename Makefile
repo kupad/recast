@@ -12,7 +12,7 @@ build-deps:
 .PHONY: build
 build: dist
 
-dist: setup.py $(PY_FILES)
+dist: setup.cfg $(PY_FILES)
 	$(PYTHON) -m build
 
 .PHONY: test
