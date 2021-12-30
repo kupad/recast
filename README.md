@@ -5,6 +5,11 @@ Convenient functions for converting bytes into various different python
 types. These functions do not modify the underlying bits, but rather,
 how they are interpreted in python.
 
+## Installation
+```
+python3 -m pip install recast
+```
+
 ## Examples
 ```py
 >>> import recast
