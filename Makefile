@@ -17,7 +17,7 @@ dist: setup.py $(PY_FILES)
 
 .PHONY: test
 test: $(PY_FILES)
-	$(PYTHON) -m unittest discover tests
+	$(PYTHON) -m pytest
 
 .PHONY: install
 install: build
