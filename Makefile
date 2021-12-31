@@ -7,12 +7,12 @@ PKG = recast
 
 .PHONY: build-deps
 build-deps:
-	$(PYTHON) -m pip install --upgrade build twine
+	$(PYTHON) -m pip install --upgrade build twine pytest
 
 .PHONY: build
 build: dist
 
-dist: setup.cfg $(PY_FILES)
+dist: setup.py $(PY_FILES)
 	$(PYTHON) -m build
 
 .PHONY: test
