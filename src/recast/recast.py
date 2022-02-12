@@ -82,3 +82,11 @@ def double2long(d, byteorder=_sys.byteorder):
 
 def double2ulong(d, byteorder=_sys.byteorder):
     return bytes2ulong(double2bytes(d, byteorder))
+
+
+def ulong2bytes(u, byteorder=_sys.byteorder):
+    return int.to_bytes(u, 8, byteorder)
+
+
+def ulong2double(u, byteorder=_sys.byteorder):
+    return bytes2double(ulong2bytes(u, byteorder))
