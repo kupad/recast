@@ -20,8 +20,9 @@ import struct as _struct
 from functools import partial as _partial
 
 
-def _unpack(fmt, b):
-    return _struct.unpack(fmt, b)[0]
+def _unpack(fmt, b, byteorder=_sys.byteorder):
+    endian = _endian(byteorder)
+    return _struct.unpack(f'{endian}{fmt}', b)[0]
 
 
 bytes2short = _partial(_unpack, 'h')
@@ -44,20 +45,28 @@ def _endian(order):
     return '<' if order == 'little' else '>'
 
 
+def int2bytes(i, byteorder=_sys.byteorder):
+    return i.to_bytes(4, byteorder, signed=True)
+
+
 def int2uint(i, byteorder=_sys.byteorder):
-    return bytes2uint(i.to_bytes(4, byteorder, signed=True))
+    return bytes2uint(int2bytes(i, byteorder))
 
 
 def int2float(i, byteorder=_sys.byteorder):
-    return bytes2float(i.to_bytes(4, byteorder, signed=True))
+    return bytes2float(int2bytes(i, byteorder))
+
+
+def uint2bytes(ui, byteorder=_sys.byteorder):
+    return ui.to_bytes(4, byteorder, signed=False)
 
 
 def uint2int(ui, byteorder=_sys.byteorder):
-    return bytes2int(ui.to_bytes(4, byteorder))
+    return bytes2int(uint2bytes(ui, byteorder))
 
 
 def uint2float(ui, byteorder=_sys.byteorder):
-    return bytes2float(ui.to_bytes(4, byteorder))
+    return bytes2float(uint2bytes(ui, byteorder))
 
 
 def float2bytes(f, byteorder=_sys.byteorder):
@@ -77,15 +86,15 @@ def double2bytes(d, byteorder=_sys.byteorder):
 
 
 def double2long(d, byteorder=_sys.byteorder):
-    return bytes2long(double2bytes(d, byteorder))
+    return bytes2longlong(double2bytes(d, byteorder))
 
 
 def double2ulong(d, byteorder=_sys.byteorder):
-    return bytes2ulong(double2bytes(d, byteorder))
+    return bytes2ulonglong(double2bytes(d, byteorder))
 
 
 def ulong2bytes(u, byteorder=_sys.byteorder):
-    return int.to_bytes(u, 8, byteorder)
+    return u.to_bytes(8, byteorder)
 
 
 def ulong2double(u, byteorder=_sys.byteorder):

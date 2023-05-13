@@ -1,9 +1,11 @@
 from .recast import (
     _endian,
     int2uint, int2float,
-    uint2int, uint2float,
+    uint2bytes, uint2int, uint2float,
     float2bytes, float2int, float2uint,
     double2bytes, double2long, double2ulong,
+    ulong2bytes,
+    bytes2short,
 )
 
 
@@ -56,3 +58,13 @@ def test_double2ulong():
     assert double2ulong(-.5) == 0xbfe0000000000000
 
 
+def test_uint2bytes():
+    assert uint2bytes(0xdeadbeef, byteorder='big') == b'\xde\xad\xbe\xef'
+
+
+def test_ulong2bytes():
+    assert ulong2bytes(2387317316387038578) == b'recast!!'
+
+
+def test_bytes2short():
+    assert bytes2short(b'\x13\x37', byteorder='big') == 0x1337
